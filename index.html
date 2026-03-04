@@ -3,10 +3,10 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Continual Multimodal Pre-training for Vision Foundation Models">
-  <meta name="keywords" content="Continual Multimodal Pre-training for Vision Foundation Models">
+  <meta name="description" content="CaTok: Taming Mean Flows for One-Dimensional Causal Image Tokenization">
+  <meta name="keywords" content="CaTok, causal image tokenization, MeanFlow, diffusion autoencoders">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CoMP</title>
+  <title>CaTok</title>
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -14,143 +14,108 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="figs/logo.png" >
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
-  <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.8.0/gradio.js"></script>
+  <link rel="icon" href="figs/favicon.png">
 </head>
 
 <style>
-  .expandable-card .card-text-container {
-    max-height: 200px;
-    overflow-y: hidden;
-    position: relative;
+  .publication-title {
+    font-family: 'Corbel', sans-serif;
   }
 
-  .expandable-card.expanded .card-text-container {
-    max-height: none;
+  .publication-authors {
+    font-family: 'Corbel', sans-serif;
+    font-size: 1.3rem;
+    line-height: 1.4;
   }
 
-  .expand-btn {
-    position: relative;
-    display: none;
-    background-color: rgba(255, 255, 255, 0.8);
-    /* margin-top: -20px; */
-    /* justify-content: center; */
-    color: #510c75;
-    border-color: transparent;
+  .publication-affiliations {
+    font-size: 1.18rem !important;
+    line-height: 1.35;
   }
 
-  .expand-btn:hover {
-    background-color: rgba(200, 200, 200, 0.8);
-    text-decoration: none;
-    border-color: transparent;
-    color: #510c75;
+  .author-block a,
+  .author-block a:visited,
+  .author-block a:active {
+    color: rgb(0, 68, 0) !important;
+    font-weight: 600;
   }
 
-  .expand-btn:focus {
-    outline: none;
-    text-decoration: none;
+  .author-block a:hover {
+    color: rgb(0, 68, 0) !important;
+    text-decoration: underline;
   }
 
-  .expandable-card:not(.expanded) .card-text-container:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 1));
+  .teaser {
+    font-family: 'Corbel', sans-serif;
   }
 
-  .expandable-card:not(.expanded) .expand-btn {
-    margin-top: -40px;
-  }
-
-  .card-body {
-    padding-bottom: 5px;
-  }
-
-  .vertical-flex-layout {
-    justify-content: center;
+  .twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     align-items: center;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
   }
 
-  .figure-img {
-    max-width: 100%;
+  .button.is-disabled {
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  .section-compact {
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+  }
+
+  .figure-caption {
+    margin-top: 0.75rem;
+    color: #555;
+    font-size: 0.95rem;
+  }
+
+  .publication-links .link-block + .link-block {
+    margin-left: 1rem;
+  }
+
+  .section {
+    padding-top: 3.2rem;
+    padding-bottom: 3.2rem;
+  }
+
+  #teaser {
+    display: block;
+    margin: 0.15rem auto 0.15rem;
+  }
+
+  .abstract-text {
+    margin-top: 0;
+  }
+
+  .abstract-text p {
+    margin-top: 0.1rem;
+    margin-bottom: 0;
+  }
+
+  .abstract-block {
+    margin-bottom: 2.2rem;
+  }
+
+  .figure-image {
+    max-width: 60%;
     height: auto;
   }
 
-  .adjustable-font-size {
-    font-size: calc(0.5rem + 2vw);
+  .title-logo {
+    height: 1.1em;
+    width: auto;
+    vertical-align: middle;
+    margin-right: 0.4rem;
   }
 
-  .chat-history {
-    flex-grow: 1;
-    overflow-y: auto;
-    /* overflow-x: hidden; */
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
+  @media (max-width: 900px) {
+    .twocol {
+      grid-template-columns: 1fr;
+    }
   }
-
-  #gradio pre {
-    background-color: transparent;
-  }
-
-.publication-authors a {
-    color: rgb(54, 125, 189) !important;
- }
-  
-
-.author-block a {
-    color: rgb(54, 125, 189);
-    font-weight: normal;
-}
-
-/* Adjust the vertical alignment and font size of the superscript */
-.author-block a sup {
-    vertical-align: baseline;
-    position: relative;
-    top: -0.3em; /* Adjusts the position slightly above the baseline */
-    right: -0.1em; /* Adjusts the position slightly to the right */
-    font-size: smaller; /* Makes the font size smaller if needed */
-}
-
-.publication-title {
-  font-family: 'Corbel', sans-serif;
-}
-
-.publication-authors {
-  font-family: 'Corbel', sans-serif;
-}
-
-.teaser {
-  font-family: 'Corbel', sans-serif;
-}
-
-.globe-container {
-  width: 200px; 
-  height: 200px; 
-  overflow: hidden; 
-  margin: 0 auto; /* 水平居中 */
-}
-
-.twocol {
-  display: grid; /* 使用 grid 布局 */
-  grid-template-columns: 1fr 1fr; /* 两列，宽度相等 */
-  gap: 20px; /* 文字和图片之间的间距 */
-  align-items: center; /* 垂直居中 */
-}
-
-
 </style>
 
 <body>
@@ -159,58 +124,30 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <!-- <h1 class="title is-1 publication-title"><img id="logo" width="5%" src="./figs/logo.png"> <i>DeepStack</i> :</h1> -->
-            <!-- <h1 class="title is-1 publication-title"><b>CoMP</b>
-              <span class="is-size-2"> <span class="is-size-1"></span></h1> -->
-            <h1 class="title is-1 publication-title"><img id="logo" width="6%" src="./figs/logov3.png">  CoMP: Continual Multimodal Pre-training <br> for Vision Foundation Models</h1>
-            <h2 class="title is-3 publication-title"> </h2>
+            <h1 class="title is-2 publication-title"><img class="title-logo" src="./figs/favicon.png" alt="CaTok logo">CaTok: Taming Mean Flows<br>for One-Dimensional Causal Image Tokenization</h1>
             <br>
 
-            <!-- <h5 class="subtitle is-4 publication-awards">NeurIPS 2024</h5> -->
-
             <div class="is-size-5 publication-authors">
-
-              <span class="author-block">
-                <a href="https://github.com/Row11n"><b>Yitong Chen</b><sup>1,2*</sup></a>&nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
-
-              <span class="author-block">
-                <a href="https://menglcool.github.io/"><b>Lingchen Meng</b><sup>1*</sup></a>&nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
-
-              <span class="author-block">
-                <a href="https://github.com/wjpoom"><b>Wujian Peng</b><sup>1,2</sup></a>&nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
-
-
-              <span class="author-block">
-                <a href="https://zxwu.azurewebsites.net/"><b>Zuxuan Wu</b><sup>1,2&dagger;</sup></a>&nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
-
-
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=f3_FP8AAAAAJ&hl=en"><b>Yu-Gang Jiang</b><sup>1</sup></a>
-              </span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?hl=en&user=a40b6HQAAAAJ">Yitong Chen</a><sup>1,2</sup>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span class="author-block"><a href="https://zxwu.azurewebsites.net/">Zuxuan Wu</a><sup>1,2&dagger;</sup>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span class="author-block"><a href="https://xpqiu.github.io/en.html">Xipeng Qiu</a><sup>1,2</sup>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=f3_FP8AAAAAJ&hl=en">Yu-Gang Jiang</a><sup>1</sup></span>
             </div>
 
-            <div class="is-size-6 publication-authors">
-              <span class="author-block"><sup>*</sup>Equal Contributions</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="author-block"><sup>&dagger;</sup>Corresponding Author</span>
+            <div class="is-size-6 publication-authors publication-affiliations">
+              <span class="author-block"><sup>1</sup> Fudan University</span>&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="author-block"><sup>2</sup> Shanghai Innovation Institute</span>
             </div>
-            
+            <div class="is-size-6 publication-authors publication-affiliations">
+              <span class="author-block"><sup>&dagger;</sup> Corresponding author</span>
+            </div>
+
             <br>
-
-
-            <div class="is-size-5 publication-authors">
-              <span class="author-block"><b style="font-weight:normal"><sup>1</sup> Shanghai Key Lab of Intell. Info. Processing, School of CS, Fudan University</span> <br>
-                <span class="author-block"><b style="font-weight:normal"><sup>2</sup> Shanghai Innovation Institute</b></span>  <br>
-            </div>
-
 
             <div class="column has-text-centered">
               <div class="publication-links">
                 <span class="link-block">
-                  <a href="#" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="ai ai-arxiv"></i>
                     </span>
@@ -218,21 +155,11 @@
                   </a>
                 </span>
                 <span class="link-block">
-                  <a href="#" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
                     </span>
                     <span>Code</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="#" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      🤗
-                    </span>
-                  <span>Model</span>
                   </a>
                 </span>
               </div>
@@ -241,252 +168,67 @@
         </div>
       </div>
     </div>
-  <!-- </section> -->
 
-  <!-- <section class="section"> -->
-    <div class="container is-max-desktop">
-        <!-- Abstract. -->
-        <div class="columns is-centered has-text-centered">
+    <div class="container is-max-desktop abstract-block">
+      <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="twocol">
-            <div>
-            <div class="content has-text-justified">
+          <img id="teaser" width="100%" src="./figs/teaser.png" alt="CaTok teaser">
+          <div class="content has-text-justified abstract-text">
             <p>
-              Pre-trained Vision Foundation Models (VFMs) provide strong representations. 
-              In this paper, we continually pre-train prevailing VFMs in a multimodal manner such that they can effortlessly process visual inputs of varying sizes and produce representations that are more aligned with language representations, regardless of their original pre-training process. 
-              To this end, we introduce <b>CoMP</b>, a carefully designed <b>Co</b>ntinual <b>M</b>ultimodal <b>P</b>re-training pipeline. 
-              Specifically, CoMP uses a Continual Rotary Position Embedding to accommodate visual inputs with different resolutions, and an Alignment Loss between visual and textual features for better cross-modal alignment. 
-              After continual pre-training, leading VFMs like DINOv2 and SigLIP achieve remarkable improvements not only in multimodal understanding tasks but also in generic classification and segmentation tasks.
+              CaTok is a 1D causal image tokenizer with a MeanFlow decoder that enables fast one-step sampling and strong multi-step
+              reconstruction while capturing diverse visual concepts across token intervals. The one-step and multi-step results are shown in
+              cols. 2 and 3; cols. 3–7 illustrate a fine-to-coarse trend as tokens are reduced; cols. 7–10 reconstruct from different token
+              segments, revealing distinct visual concepts.
             </p>
-            </div>
-            </div>
-            <img id="model" width="100%" src="./figs/teaser.png">
-
+          </div>
         </div>
-        </div>
-        </div>
-        <br>
-        <br>
-  
-
-    <section class="section" id="BibTeX">
-      <div class="container is-max-desktop content">
-        <h2 class="title">BibTeX</h2>
-        <pre><code>
-<!-- @inproceedings{comp,
-  title={},
-  author={},
-  booktitle={},
-  year={}
-} -->
-        </code></pre>
-        <!-- clustrmaps -->
-        <div class="globe-container">
-        <script type="text/javascript" id="clstr_globe" width="100px" src="//clustrmaps.com/globe.js?d=1dJz619CGvbEoLM5B3ckFZrkoIWtApou5oQVot8EUTo"></script>
-        </div>  
       </div>
-    </section>
-
-    
-    <div class="content has-text-centered">
     </div>
-      <div class="column is-18">
-          <p>
-            This website is adapted from <a href="https://nerfies.github.io/">Nerfies</a> and <a href="https://mathvista.github.io/">MathVista</a>, licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>
-          </p>
+  </section>
+
+  <section class="section section-compact" id="method">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method Overview</h2>
+        <img class="figure-image" src="./figs/arch.png" alt="CaTok architecture">
+        <div class="figure-caption">
+          CaTok combines a causal ViT encoder with a MeanFlow decoder, selecting 1D tokens over time intervals to preserve causality.
+        </div>
+      </div>
     </div>
+  </section>
 
+  <section class="section section-compact" id="decoder">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Decoder Comparison</h2>
+        <img class="figure-image" src="./figs/decoder.png" alt="Decoder comparison">
+        <div class="figure-caption">
+          MeanFlow decoding maintains causality and balance, supporting efficient one-step sampling.
+        </div>
+      </div>
+    </div>
+  </section>
 
-  
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+<pre><code>@inproceedings{catok2026,
+  title={CaTok: Taming Mean Flows for One-Dimensional Causal Image Tokenization},
+  author={Chen, Yitong and Wu, Zuxuan and Qiu, Xipeng and Jiang, Yu-Gang},
+  booktitle={CVPR},
+  year={2026}
+}
+</code></pre>
+    </div>
+  </section>
 
-  <script>
-    // Handle message showing
-    function createChatRow(sender, text, imageSrc) {
-      var article = document.createElement("article");
-      article.className = "media"
-
-      var figure = document.createElement("figure");
-      figure.className = "media-left";
-
-      var span = document.createElement("span");
-      span.className = "icon is-large";
-
-      var icon = document.createElement("i");
-      icon.className = "fas fas fa-2x" + (sender === "User" ? " fa-user " : sender === "LLaVA" ? " fa-robot" : "");
-
-      var media = document.createElement("div");
-      media.className = "media-content";
-
-      var content = document.createElement("div");
-      content.className = "content";
-
-      var para = document.createElement("p");
-
-      // wrap text in pre tag to preserve whitespace and line breaks
-      var pre_text = document.createElement("pre");
-      pre_text.style = "background-color: white; font-size: 18px; font-family: Arial; padding: 0; margin: 0; white-space: pre-wrap; word-wrap: break-word;";
-      var paraText = document.createTextNode(text);
-      pre_text.appendChild(paraText);
-
-      var strong = document.createElement("strong");
-      strong.innerHTML = sender;
-      var br = document.createElement("br");
-
-      para.appendChild(strong);
-      para.appendChild(br);
-      para.appendChild(pre_text);
-
-      // Add image if imageSrc is provided
-      if (imageSrc) {
-        var img = document.createElement("img");
-        img.src = imageSrc;
-        img.style = "max-width: 100%; max-height: 300px;"; // Adjust the style as needed
-        para.appendChild(img);
-      }
-
-      content.appendChild(para);
-      media.appendChild(content);
-      span.appendChild(icon);
-      figure.appendChild(span);
-      if (sender !== "Description") {
-        article.appendChild(figure);
-      };
-      article.appendChild(media);
-      return article;
-    }
-
-    function addMessageToChatHistory(sender, message, imageSrc) {
-      const chatHistory = document.querySelector('.chat-history');
-      const chatRow = createChatRow(sender, message, imageSrc);
-      chatHistory.appendChild(chatRow);
-      chatHistory.scrollTop = chatHistory.scrollHeight;
-    }
-
-    function clearChatHistory() {
-      const chatHistory = document.querySelector('.chat-history');
-      chatHistory.innerHTML = "";
-    }
-
-    // 
-    const conversations = [
-      {
-        "description": "monalisa",
-        "turns": [
-          // ["Description", "Please read the description and answer the question."],
-          ["User", "", "/static/images/monalisa.jpg"],
-          ["User", "Do you know who drew this painting?​"],
-          ["LLaVA",
-            "The painting depicts a woman, commonly believed to be Mona Lisa, the famous artwork by Leonardo da Vinci. " +
-            "It is a portrait painting that showcases the woman's enigmatic smile and has become one of the most famous and iconic art pieces in the world. " +
-            "The original work is displayed in the Louvre Museum in Paris, and it is known for its intricate details, use of oil paint, and the artist's innovative techniques that contributed to its enduring appeal and mystery.​​"
-          ]
-        ]
-      },
-      {
-        "description": "monalisa with dog head",
-        "turns": [
-          ["User", "", "/static/images/monalisa-fun.jpg"],
-          ["User", "Do you know who drew this painting?​"],
-          ["LLaVA", "The painting depicts a dog in a humorous situation, where it appears to be wearing a woman's dress and standing in front of a landscape. Although the artist of the painting is not explicitly identified, it could be a reference to the famous artist Da Vinci, known for his artistic works, including the Mona Lisa. The painting is likely a creative and comical take on the traditional portrait style, replacing a human figure with a dog dressed in a woman's clothing, making it an interesting and amusing visual piece.​"]
-        ]
-      },
-      {
-        "description": "Titanic Rose and Jack",
-        "turns": [
-          ["User", "", "/static/images/titanic.jpg"],
-          ["User", "What's the ending of this movie?​​"],
-          ["LLaVA", "​In the image, a young woman is leaning on a man in front of a beautiful sunset, with both of them standing on a boat. They appear to be enjoying a romantic moment together. The scene suggests that they could be depicted as the characters Jack and Rose from the popular movie Titanic. In the movie, their romance blossoms aboard the fictional ocean liner Titanic, with the pair ultimately sharing a passionate kiss as the ship sinks into the ocean. The ending of the movie is known for its emotional and heartfelt scenes, where the characters are forced to say goodbye to each other as they are separated by the sinking ship. The image evokes a sense of romance and nostalgia, paying tribute to the iconic love story portrayed in the movie Titanic.​"]
-        ]
-      },
-      {
-        "description": "Fridge",
-        "turns": [
-          ["User", "", "/static/images/fridge.jpg"],
-          ["User", "What are the meals that I can cook with these?​​"],
-          ["LLaVA", "With the variety of food items stored in the refrigerator, you can prepare several meals. For example, you can create a fruit salad using the strawberries, blueberries, and carrots. Additionally, you can make a delicious smoothie using the fruits and vegetables, which would be a healthy and nutritious snack or breakfast option. The milk and eggs can be used to create various dishes, such as a milk-based smoothie, a baked casserole, or scrambled eggs. The juice can also be used to make a fresh fruit and juice mix or as a refreshing homemade popsicle. The possibilities are vast, and the meals you can create will depend on your preferences and dietary needs.​​"],
-          ["User", "I would like to do the fruit salad.  Show me the recipe.​"],
-          ["LLaVA",
-            `Certainly! Here's a simple fruit salad recipe using the items in your refrigerator:​
-
-Ingredients:​
-- 2 cups fresh strawberries, sliced​
-- 1 cup fresh blueberries​
-- 1 large carrot, grated​
-- Juice of half a lemon​
-- A handful of chopped fresh parsley or mint​
-- A few ice cubes​
-- Optional: honey or maple syrup (adjust to taste)​
-
-Instructions:​
-1. In a large bowl, combine the sliced strawberries, blueberries, and carrot. Gently toss them together to mix.​
-2. Drizzle the juice of half a lemon over the fruit and vegetables to prevent them from oxidizing and add a refreshing citrus flavor.​
-3. Sprinkle the chopped fresh parsley or mint over the fruit and gently toss once more.​
-4. If desired, add a drizzle of honey or maple syrup for a touch of sweetness. Adjust the amount according to your taste preferences.​
-5. Cover the bowl and refrigerate the fruit salad for at least 30 minutes or up to a few hours. This allows the flavors to meld and creates a more refreshing salad.​
-6. Serve the fruit salad in cups or bowls, garnished with a sprinkle of fresh parsley or mint, if desired.​
-
-This fruit salad recipe is perfect for a healthy snack or side dish, and with the variety of ingredients available in your refrigerator, it should be easy to put together quickly.`]]
-      },
-      {
-        "description": "Beautiful View",
-        "turns": [
-          ["User", "", "/static/images/view.jpg"],
-          ["User", "What are the things I should be cautious about when I visit here?​​"],
-          ["LLaVA", "When visiting this peaceful location with a pier extending over a serene lake, surrounded by mountains, there are several things to be cautious about. First, pay attention to the weather conditions, as sudden changes in weather, especially strong winds or storms, can cause the water to become rough and pose risks to the stability of the pier. Second, be mindful of the structural integrity of the pier; avoid overloading it with too many people or excessive weight, as this could potentially damage the pier or cause it to collapse. Additionally, be aware of the surrounding wildlife and respect their space; do not harm or disturb them in any way. Finally, if you decide to go fishing, ensure that you adhere to any local fishing regulations and use appropriate fishing techniques to keep the lake ecosystem healthy and maintain the balance of the food chain.​​"],
-          ["User", "Compose an engaging travel blog post about my trip to this place, highlighting the beautiful sceneries, joyful experiences, and include possible anecdotes.​​"],
-          ["LLaVA",
-            `Traveling to this picturesque location with a serene lake and mountains in the background was a refreshing and rejuvenating experience. The pier extending over the calm water provided an excellent vantage point from which to appreciate the breathtaking scenery. As I stood on the pier, I couldn't help but feel a deep connection with nature, taking a moment to soak in the peaceful atmosphere.​
-
-One of the highlights of my trip was undoubtedly the fishing experience. The area is teeming with life, and I was thrilled to land a sizeable catch, despite the modest size of the lake. The joy of fishing in such a beautiful setting was truly rewarding, and it allowed me to take a break from my busy life and truly immerse myself in the tranquility of nature.​
-
-While exploring the surrounding area, I came across a family of birds that had built a nest close to the pier, adding to the charm of the location. Interacting with the wildlife and observing their behavior was an enriching experience that I'll cherish for years to come.​
-
-In conclusion, this idyllic destination provided me with an opportunity to unwind and recharge, surrounded by mesmerizing natural beauty and the gentle sounds of water and wildlife. If you're looking for a serene escape from the hustle and bustle of everyday life, this pier overlooking the lake is the perfect place to find solace and reconnect with nature.`
-          ]
-        ]
-      },
-    ];
-
-    // The current image index
-    let currentIndex = 0;
-
-    // The function to update the displayed chat history
-    function update_dialog_demo() {
-      // Clear the chat history
-      clearChatHistory();
-
-      for (let i = 0; i < conversations[currentIndex].turns.length; i++) {
-        if (conversations[currentIndex].turns[i].length == 2) {
-          addMessageToChatHistory(conversations[currentIndex].turns[i][0], conversations[currentIndex].turns[i][1]);
-        }
-        else {
-          addMessageToChatHistory(conversations[currentIndex].turns[i][0], conversations[currentIndex].turns[i][1], conversations[currentIndex].turns[i][2]);
-        }
-      }
-
-      // scroll to the top of the chat history
-      document.querySelector('.chat-history').scrollTop = 0;
-    }
-
-    // Initialize the displayed image
-    update_dialog_demo();
-
-    // Event listeners for the buttons
-    document.getElementById('prev-question').addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + conversations.length) % conversations.length;
-      update_dialog_demo();
-    });
-
-    document.getElementById('next-question').addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % conversations.length;
-      update_dialog_demo();
-    });
-
-
-  </script>
-
+  <div class="content has-text-centered">
+    <p>
+      This website is adapted from <a href="https://nerfies.github.io/">Nerfies</a> and <a href="https://mathvista.github.io/">MathVista</a>,
+      licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+    </p>
+  </div>
 </body>
 
 </html>
